@@ -91,7 +91,32 @@ def NQueens2(chessBoard,N,queensPlaced):
 					chessBoard[i][j] = 0
 					queensPlaced = queensPlaced - 1
 	return False
-	
+
+#Optimizing the logic further	
+def NQueens3(chessBoard,N,queensPlaced):
+	if queensPlaced == N:
+		return True
+	i=0
+	while(i<N):
+		j=0
+		while(j<N):
+			while( 1 in chessBoard[i] and i<N-1):
+				i+=1
+				
+			if canBeAttacked(i,j,chessBoard,N) is True:
+				pass
+			else:
+				chessBoard[i][j]=1
+				queensPlaced += 1
+				if NQueens3(chessBoard,N,queensPlaced):
+					return True
+				else:
+					chessBoard[i][j] = 0
+					queensPlaced = queensPlaced - 1
+			j+=1
+		i+=1
+	return False
+
 def main():
 	N = int(input());
 	chessBoard = list();
@@ -103,7 +128,7 @@ def main():
 	#chess board initialized
 	
 	#NQueens Problem
-	if NQueens2(chessBoard,N,0):
+	if NQueens3(chessBoard,N,0):
 		print("YES")
 		displayChessBoardHackerEarth(chessBoard,N)
 	else:
