@@ -1,5 +1,6 @@
 N=int(input())
 arr = input().split()
+arrLength = len(arr)
 d=dict()
 for a in arr:
 	if a in d.keys():
@@ -9,6 +10,9 @@ for a in arr:
 
 Q=int(input())
 dlookup = dict()
+
+maxKey=max(d,key=d.get)	
+maxFrequency = d[maxKey]
 
 for x in range(0,Q):
 	inp = input()
@@ -23,8 +27,14 @@ for x in range(0,Q):
 	if(inp in dlookup.keys()):
 		print(dlookup[inp])
 		continue
-	maxKey=max(d,key=d.get)	
-	if(d[maxKey] < f):
+	
+	if (f > arrLength):
+		print('0')
+		dlookup[inp]='0'
+		continue
+	
+	# maxKey=max(d,key=d.get)	
+	if(maxFrequency < f):
 		print('0')
 		dlookup[inp] = '0'
 		continue
