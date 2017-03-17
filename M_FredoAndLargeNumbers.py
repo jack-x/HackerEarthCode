@@ -1,12 +1,14 @@
 N=int(input())
 arr = input().split()
-arrLength = len(arr)
+# arrLength = len(arr)
 d=dict()
+arr2=[]
 for a in arr:
 	if a in d.keys():
 		d[a] = d[a]+1
 	else:
 		d[a]=1
+		arr2.append(a)
 
 Q=int(input())
 dlookup = dict()
@@ -28,10 +30,13 @@ for x in range(0,Q):
 		print(dlookup[inp])
 		continue
 	
-	if (f > arrLength):
-		print('0')
-		dlookup[inp]='0'
-		continue
+	#I don't really need arrlength at all. Maxfrequency has got it covered.
+	
+	# if (f > arrLength):
+		# print('0')
+		# dlookup[inp]='0'
+		# continue
+	
 	
 	# maxKey=max(d,key=d.get)	
 	if(maxFrequency < f):
@@ -44,7 +49,7 @@ for x in range(0,Q):
 		#Type 0 Query
 		#First element whose frequency is atleast f	
 		flag = 0
-		for a in arr:
+		for a in arr2:
 			if(d[a] >= f):
 				print(a)
 				dlookup[inp]= a
@@ -54,7 +59,7 @@ for x in range(0,Q):
 			print('0')
 	else:
 		flag = 0
-		for a in arr:
+		for a in arr2:
 			if(d[a] == f):
 				print(a)
 				dlookup[inp] = a
