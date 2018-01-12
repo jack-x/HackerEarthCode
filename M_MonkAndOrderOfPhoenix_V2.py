@@ -1,4 +1,5 @@
-
+GenerateFlag=1
+ 
 def main():
 	N=int(input())
 	VoldemortArmy=[]
@@ -32,30 +33,53 @@ def main():
 		
 		if(operation[0]=='2'):
 			#print("Harry Wand Stack: {}".format(HarryWandStack))
+			global GenerateFlag
+			if(GenerateFlag == 1):
+				GenerateHarryWandStack(VoldemortArmy,HarryWandStack)
+				GenerateFlag=0
 			if(len(HarryWandStack) == N):
 				print("YES")
 			else:
 				print('NO')
 		
 		
-	
 def VoldemortAddFighter(VoldemortArmy,k,h,HarryWandStack):
 	VoldemortArmy[k-1].append(h)
-	if(k==1):
-		if(h<HarryWandStack[0]):
-			GenerateHarryWandStack(VoldemortArmy,HarryWandStack)
-	if(len(HarryWandStack) == k and HarryWandStack[len(HarryWandStack) - 1] > h):
-		GenerateHarryWandStack(VoldemortArmy,HarryWandStack,k-1)
-	elif(len(HarryWandStack) == k-1 and HarryWandStack[len(HarryWandStack) -1] < h):
-		GenerateHarryWandStack(VoldemortArmy,HarryWandStack,k-1)
+	global GenerateFlag
+	if(GenerateFlag==1):
+		return
+	if(len(HarryWandStack) != len(VoldemortArmy)):
+		 if(k!=1 and len(HarryWandStack) == k-1 and HarryWandStack[k-2]<h):
+			 GenerateFlag=1
+		 elif(k==1 and len(HarryWandStack)==1 and VoldemortArmy[1][-1] > h):
+			 GenerateFlag=1
+		
+	
 	
 def VoldemortRemoveFighter(VoldemortArmy,k,HarryWandStack):
 	RemovedFighter = VoldemortArmy[k-1].pop()
-	if(len(HarryWandStack) >= k):
+	global GenerateFlag
+	if(GenerateFlag==1):
+		return
+	try:	
 		if(HarryWandStack[k-1] == RemovedFighter):
-			GenerateHarryWandStack(VoldemortArmy,HarryWandStack,k-1)
-
+			HarryWandStack.pop(k-1)
+			GenerateFlag=1
+	except:
+		pass
+		#GenerateFlag=0
+			
+# def VoldemortRemoveFighter(VoldemortArmy,k,HarryWandStack):
+	# RemovedFighter = VoldemortArmy[k-1].pop()
+	# if(len(HarryWandStack) >= k):
+		# if(HarryWandStack[k-1] == RemovedFighter):
+			# GenerateHarryWandStack(VoldemortArmy,HarryWandStack,k-1)
+ 
 def GenerateHarryWandStack(VoldemortArmy,HarryWandStack,k=0):
+	global GenerateFlag
+	if(len(HarryWandStack) == len(VoldemortArmy)):
+		GenerateFlag=0
+		return
 	del HarryWandStack[k:]
 	#Emptying the HarryWandStack For calculation after every "worthy" modification
 	#This does not create a new Array and modifies the HarryWandStack Array in place
@@ -73,7 +97,12 @@ def GenerateHarryWandStack(VoldemortArmy,HarryWandStack,k=0):
 		
 		ArmyRow=VoldemortArmy[row]
 		if(ArmyRow[len(ArmyRow)-1] < FirstRowMin):
-			break
+			GenerateFlag=0
+			return
+		if(ArmyRow[0] > FirstRowMin):
+			FirstRowMin==ArmyRow[0]
+			HarryWandStack.append(FirstRowMin)
+			continue
 		ArmyRowHeight=0
 		#Using Binary Search Here
 		x=0
@@ -104,7 +133,8 @@ def GenerateHarryWandStack(VoldemortArmy,HarryWandStack,k=0):
 			HarryWandStack.append(FirstRowMin)
 			continue
 		else:
-			break	
+			GenerateFlag=0
+			return	
 	#loop And Function End Here
 	
 	
@@ -142,6 +172,6 @@ def HarrySpecialWandCheck(VoldemortArmy):
 	return "YES"
 		
 			
-
-
+ 
+ 
 if __name__ == "__main__": main()
